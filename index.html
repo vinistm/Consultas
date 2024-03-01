@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exibição de Dados</title>
+</head>
+<body>
+  <h1>Dados dos Vendedores</h1>
+  <button onclick="carregarDados()">Carregar Dados</button>
+  <div id="dadosContainer" style="display: none;">
+  </div>
+
+  <script>
+    function carregarDados() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var dados = JSON.parse(this.responseText);
+          exibirDados(dados);
+          document.getElementById("dadosContainer").style.display = "block"; // Exibir o container após carregar os dados
+        }
+      };
+      xhttp.open("GET", "http://localhost:3003/dados", true); 
+      xhttp.send();
+    }
+
+    function exibirDados(dados) {
+      var container = document.getElementById("dadosContainer");
+      container.innerHTML = '';
+
+      dados.forEach(function(dado) {
+        var div = document.createElement("div");
+        div.innerHTML = `
+          <div><strong>Grupo:</strong> ${dado.GRUPO.trim()}</div>
+          <div><strong>Descrição da Fase de Produção:</strong> ${dado.DESC_FASE_PRODUCAO.trim()}</div>
+          <div><strong>Coleção:</strong> ${dado.COLECAO.trim()}</div>
+          <div><strong>Grupo do Produto:</strong> ${dado.GRUPO_PRODUTO.trim()}</div>
+          <div><strong>Produto:</strong> ${dado.PRODUTO.trim()}</div>
+          <div><strong>Descrição do Produto:</strong> ${dado.DESC_PRODUTO.trim()}</div>
+          <div><strong>Cor do Produto:</strong> ${dado.COR_PRODUTO.trim()}</div>
+          <div><strong>Descrição da Cor do Produto:</strong> ${dado.DESC_COR_PRODUTO.trim()}</div>
+          <div><strong>Código do Fornecedor:</strong> ${dado.COD_FORNECEDOR.trim()}</div>
+          <div><strong>Fornecedor:</strong> ${dado.FORNECEDOR.trim()}</div>
+          <div><strong>Material:</strong> ${dado.MATERIAL.trim()}</div>
+          <div><strong>Descrição do Material:</strong> ${dado.DESC_MATERIAL.trim()}</div>
+          <div><strong>Grade:</strong> ${dado.GRADE.trim()}</div>
+          <div><strong>Cor do Material:</strong> ${dado.COR_MATERIAL.trim()}</div>
+          <div><strong>Descrição da Cor do Material:</strong> ${dado.DESC_COR_MATERIAL.trim()}</div>
+          <div><strong>Unidade da Ficha Técnica:</strong> ${dado.UNID_FICHA_TEC.trim()}</div>
+          <div><strong>Custo de Reposição:</strong> ${dado.CUSTO_REPOSICAO.toFixed(2)}</div>
+          <div><strong>Consumo:</strong> ${dado.CONSUMO.toFixed(2)}</div>
+          <hr>
+        `;
+        container.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
